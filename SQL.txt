@@ -1,0 +1,196 @@
+1.create table Airplane(
+Airplane_No number(10) primary key,
+Seating_Capacity number(10) not null,
+SL_No number(5) constraint sl_usfk references US_Bangla(SL_No))
+
+insert into Airplane(Airplane_No, Seating_Capacity, SL_No) values (110, 110, 01)
+
+select * from airplane
+
+
+2.create table US_Bangla(
+SL_No number(5) not null primary key,
+Website varchar2(20) not null,
+Airplane_No number(10))
+
+insert into US_Bangla(SL_No, Website, Airplane_No) values (10, 'US Bangla', 110)
+
+select * from us_bangla
+
+
+drop table airplane
+drop table us_bangla
+
+desc us_bangla
+desc airplane
+
+
+3.create table Airport(
+Airport_code number(5) not null primary key,
+Address varchar2(50) not null,
+Country varchar2(20) not null,
+Zip number(4) not null,
+City varchar2(20) not null,
+State varchar2(20) not null)
+
+desc airport
+
+Insert into Airport(Airport_code, Address, Country, Zip, City, State) values(1001, 'AH-af', 'Ban', 1200, 'Dhaka', 'None')
+Insert into Airport(Airport_code, Address, Country, Zip, City, State) values(1013, 'aso-e', 'Asu', 1090, 'Sydney', 'Sydney')
+
+select * from airport
+
+
+4. create table Airport_Location(
+Add_No number(5) not null primary key,
+Address varchar2(50) not null,
+Country varchar2(20) not null,
+Zip number(4) not null,
+City varchar2(20) not null,
+State varchar2(20) not null)
+
+desc Airport_Location
+
+Insert into Airport_Location(add_no, Address, Country, Zip, City, State) values(03, 'AH-af', 'Ban', 1890, 'Chitagong', 'None')
+Insert into Airport_Location(add_no, Address, Country, Zip, City, State) values(05, 'aso-e', 'Asu', 1090, 'Sydney', 'Sydney')
+
+select * from Airport_Location
+
+
+5. create table Airport_Details(
+a_No number(3) not null primary key,
+Airplane_No number(10) constraint an_ap_fk references Airplane(Airplane_No),
+Airport_code number(5) constraint ac_ad_fk references Airport(Airport_code))
+
+desc Airport_Details
+
+drop table Airport_Details
+
+Insert into Airport_Details(a_No, airplane_no, airport_code) values (10, 106, 1011)
+
+select * from Airport_Details
+
+
+6. create table Flight_Trip(
+Flight_Trip_No number(3) not null primary key,
+Depart_Time date not null,
+Arrival_Time date not null,
+Arrival_Airport varchar2(20) not null,
+Depart_Airport varchar2(20) not null,
+No_of_Tavellers number(3) not null)
+
+drop table Flight_Trip
+
+desc Flight_Trip
+
+insert into Flight_Trip(Flight_Trip_No, Depart_Time, Arrival_Time, Arrival_Airport, Depart_Airport, No_of_Tavellers) values (10,TO_DATE('15/04/2016', 'DD/MM/YYYY'),TO_DATE('18/04/2016', 'DD/MM/YYYY'), 'Dhaka Airport', 'New Tork Airport', 305)
+
+select * from Flight_Trip
+
+
+7. create table Flight_Details(
+Af_No number(10) not null primary key,
+Airplane_No number(10) constraint an_app_fk references Airplane(Airplane_No),
+Flight_Trip_No number(3) constraint fn_ft_fk references Flight_Trip(Flight_Trip_No))
+
+desc Flight_Details
+
+Insert into Flight_Details(Af_No, Airplane_No, Flight_Trip_No) values(10, 110, 10)
+
+select * from Flight_Details
+
+
+8. create table Traveller_Name_Details(
+n_No number(5) primary key,
+Full_Name varchar2(50) not null,
+First_name varchar2(25),
+Last_Name varchar2(25))
+
+desc Traveller_Name_Details
+
+drop table Traveller_Name_Details
+
+Insert into Traveller_Name_Details(n_No, Full_Name, First_Name, Last_NAMe) values (10007, 'Jone', 'Jone', 'Jone')
+
+select * from Traveller_Name_Details
+
+
+9. create table Fare(
+F_No number(5) primary key, 
+Discount number(6), 
+Amount number(5), 
+Tax number(6), 
+Currency number(5),
+Final_Amount number(6) not null)
+
+desc Fare
+
+
+Insert into Fare(F_No, Discount, Amount, Tax, Currency, Final_Amount) values (0015, 100, 1000, 10, 59, 1059)
+
+select * from Fare
+
+
+10. create table Traveller_Details(
+Traveller_ID number(5) primary key,
+Phone number(5) not null, 
+Flight_Trip_No number(5) constraint fi_fi_fk references Flight_Trip(Flight_Trip_No), 
+n_No number(5) constraint tr_fn_fk references Traveller_Name_Details(n_No))
+
+desc Traveller_Details
+
+drop table Traveller_Details
+
+insert into Traveller_Details(Traveller_ID, Phone, Flight_Trip_No, n_No) values (10019, 11075, 07, 10008)
+
+select * from Traveller_Details
+
+11. create table Traveller(
+Traveller_ID number(10) primary key,
+Name Varchar2(50) not null, 
+First_Name varchar2(25), 
+Last_Name varchar2(25))
+
+desc Traveller
+
+insert into Traveller(Traveller_ID, Name, First_Name, Last_Name) values (10015, 'G H', 'G','H')
+
+select * from Traveller
+
+
+12. CREATE TABLE Traveller_Seat_Details(
+Seat_No number(3) primary key,
+Available number(3) not null, 
+Location Varchar2(5), 
+Class varchar2(3), 
+Traveller_ID number(10) constraint ti_ffn_fk references Traveller(Traveller_ID ))
+
+desc Traveller_Seat_Details
+
+insert into Traveller_Seat_Details(Seat_No, Available, Location, Class, Traveller_ID) values (05, 29, 'F-1', 'B', 10015)
+
+
+select * from Traveller_Seat_Details
+
+
+13. create table Seats(
+Seat_No number(5) primary key,
+Available number(3), 
+Location varchar2(5), 
+Class varchar2(3), 
+Airplane_No number(10) constraint a_ap_fk references Airplane(Airplane_No))
+
+desc Seats
+
+
+Insert into Seats(Seat_No, Available, Location, Class, Airplane_No) values (06, 00, 'F-3', 'A', 106)
+
+select * from Seats
+
+
+
+
+
+
+
+
